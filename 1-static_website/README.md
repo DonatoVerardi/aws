@@ -24,7 +24,8 @@ make apply
 
 ## Test
 
-todo
+Browse to this address:
+https://bucket-static-website-123.s3.eu-west-3.amazonaws.com/index.html
 
 ## Cleanup
 
