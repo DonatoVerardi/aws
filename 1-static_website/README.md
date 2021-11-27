@@ -20,7 +20,7 @@ Install aws-mfa in order to simplify the use of the CLI, if MFA is enabled: http
 
 ## Deploy
 
-todo
+make apply
 
 ## Test
 
@@ -28,4 +28,4 @@ todo
 
 ## Cleanup
 
-todo
+make delete
