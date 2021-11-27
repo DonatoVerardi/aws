@@ -12,6 +12,12 @@ This lab uses the following tools and components:
 - Route53
 - CloudFront
 
+## Prerequisites
+
+Have a valid AWS Account.
+Install the AWS Cli: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-prereqs.html
+Install aws-mfa in order to simplify the use of the CLI, if MFA is enabled: https://pypi.org/project/aws-mfa/
+
 ## Deploy
 
 todo
