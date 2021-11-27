@@ -1,3 +1,35 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This stack deploys a basic HTTP static website
+
+Parameters:
+  BucketName:
+    Description: "Name of the bucket to be created"
+    Type: String
+    Default: bucket-static-website-123
+
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketName: 
+        Ref: BucketName
+      WebsiteConfiguration:
+        IndexDocument: "index.html"
+        ErrorDocument: "error.html"
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: 
+        Ref: BucketName
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource:
+              Fn::Sub: "arn:aws:s3:::${BucketName}/*"

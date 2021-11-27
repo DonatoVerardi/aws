@@ -1,6 +1,6 @@
 # Static Website
 
-The main goal of this lab is to familiarize with the AWS environment and create a static website.
+The main goal of this lab is to familiarize with the AWS environment and create a basic HTTP static website.
 
 ## Tools and components
 
@@ -29,3 +29,7 @@ todo
 ## Cleanup
 
 make delete
+
+## Thanks to
+
+https://medium.com/swlh/aws-website-hosting-with-cloudformation-guide-36cac151d1af
