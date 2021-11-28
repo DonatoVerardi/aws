@@ -93,9 +93,9 @@ The following scripts will create a Stack in CloudFormation which:
 
 Open the file static_website_stack.yml and change the Parameter Values (default):
 
-- BucketName= <this must be a unique name>
-- DomainName= <URL of your website>
-- CertificateARN= <ARN of your certificate, that you will find in AWS Certificate Manager>
+- BucketName= _this must be a unique name_
+- DomainName= _URL of your website_
+- CertificateARN= _ARN of your certificate, that you will find in AWS Certificate Manager_
 
 And then, in the console:
 
