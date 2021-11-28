@@ -7,6 +7,10 @@ Parameters:
     Description: "Name of the bucket to be created"
     Type: String
     Default: bucket-static-website-123
+  DomainName:
+    Description: "DNS Domain of the website"
+    Type: String
+    Default: example.com
 
 Resources:
   S3Bucket:
@@ -81,6 +85,20 @@ Resources:
               OriginAccessIdentity:
                 Fn::Sub: "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
         PriceClass: "PriceClass_All"
+
+
+  DNSEntries:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName:
+        Fn::Sub: ${DomainName}.
+      RecordSets:
+        - Name: 
+            Ref: BucketName
+          Type: CNAME
+          TTL: "300"
+          ResourceRecords:
+          - Fn::GetAtt: [ S3Bucket, RegionalDomainName ] 
 
 Outputs:
   Bucket:
