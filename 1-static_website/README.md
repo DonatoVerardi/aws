@@ -91,13 +91,15 @@ The following scripts will create a Stack in CloudFormation which:
 
 ## Deployment
 
-Open the file config.mk and change the values:
+Open the file static_website_stack.yml and change the Parameter Values (default):
 
-- AWS_BUCKET_NAME= <this must be a unique name>
-- AWS_DOMAIN_NAME= <URL of your website>
-- AWS_CERTIFICATE_ARN= <ARN of your certificate>
+- BucketName= <this must be a unique name>
+- DomainName= <URL of your website>
+- CertificateARN= <ARN of your certificate, that you will find in AWS Certificate Manager>
 
-make deploy
+And then, in the console:
+
+> make deploy
 
 ## Test
 
@@ -105,9 +107,16 @@ Browse to the URL you defined as AWS_DOMAIN_NAME (with https://)
 
 ## Cleanup
 
-make clean
+In the console:
 
-## Thanks to
+> make clean
+
+Manual tasks to do, after the cleanup is completed:
+
+- delete certificate in ACM
+- delete Hosted Zone in Route53
+
+## Many many thanks to
 
 - https://coletiv.com/blog/how-to-use-aws-cloud-formation-to-setup-the-infrastructure-for-a-static-website/
 - https://medium.com/swlh/aws-website-hosting-with-cloudformation-guide-36cac151d1af
