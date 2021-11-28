@@ -6,26 +6,37 @@ Parameters:
   BucketName:
     Description: "Name of the bucket to be created"
     Type: String
-    Default: bucket-static-website-123
+    Default: donato-static-1234
   DomainName:
     Description: "DNS Domain of the website"
     Type: String
-    Default: example.com
+    Default: static-website.donato.cloudns.ph
+  CertificateARN:
+    Description: "the ARN of the certificate"
+    Type: String
+    Default: "arn:aws:acm:us-east-1:440111066673:certificate/ae2b1b4f-aa3c-4a85-a0cb-782579d6caa9"
 
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: 
+      BucketName:
         Ref: BucketName
       WebsiteConfiguration:
         IndexDocument: "index.html"
         ErrorDocument: "error.html"
 
+  CloudFrontOriginAccessIdentity:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment:
+          Fn::Sub: "Cloudfront Origin identity for ${DomainName}"
+
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: 
+      Bucket:
         Ref: BucketName
       PolicyDocument:
         Id: MyPolicy
@@ -33,27 +44,20 @@ Resources:
         Statement:
           - Sid: PublicReadForGetBucketObjects
             Effect: Allow
-            Principal: "*"
+            #Principal: "*"
+            Principal:
+              AWS:
+                Fn::Sub: "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
             Action: s3:GetObject
             Resource:
               Fn::Sub: "arn:aws:s3:::${BucketName}/*"
 
-  CloudFrontOriginAccessIdentity:
-    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: 
-          Ref: BucketName
-
-  
   CloudFrontDistribution:
     Type: "AWS::CloudFront::Distribution"
     Properties:
       DistributionConfig:
-        CustomErrorResponses:
-          - ErrorCode: 403 # not found
-            ResponseCode: 404
-            ResponsePagePath: "/error.html"
+        Aliases:
+          - Ref: DomainName
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
@@ -72,48 +76,36 @@ Resources:
           MaxTTL: 86400 # in seconds
           MinTTL: 60 # in seconds
           TargetOriginId: s3origin
-          ViewerProtocolPolicy: "allow-all"
+          #ViewerProtocolPolicy: "allow-all"
+          ViewerProtocolPolicy: redirect-to-https
         # This DefaultRootObject configuration is not enough.
-        DefaultRootObject: "/index.html"
+        DefaultRootObject: index.html
         Enabled: true
         HttpVersion: http2
         Origins:
           - DomainName:
-              Fn::GetAtt: [ S3Bucket, DomainName ]
+              Fn::GetAtt: [S3Bucket, DomainName]
             Id: s3origin
             S3OriginConfig:
               OriginAccessIdentity:
                 Fn::Sub: "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
         PriceClass: "PriceClass_All"
+        ViewerCertificate:
+          AcmCertificateArn:
+            Ref: CertificateARN
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
 
-
-  DNSEntries:
+  DNS:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneName:
         Fn::Sub: ${DomainName}.
       RecordSets:
-        - Name: 
-            Ref: BucketName
-          Type: CNAME
-          TTL: "300"
-          ResourceRecords:
-          - Fn::GetAtt: [ S3Bucket, RegionalDomainName ] 
-
-Outputs:
-  Bucket:
-    Description: "S3 Bucket Name"
-    Value: 
-      Ref: S3Bucket
-  BucketUrl:
-    Description: "S3 Bucket Url"
-    Value:
-      Fn::GetAtt: [ S3Bucket, WebsiteURL ]
-  DistributionId:
-    Description: "CloudFront Distribution ID"
-    Value: 
-      Ref: CloudFrontDistribution
-  Domain:
-    Description: "Cloudfront Domain"
-    Value:
-      Fn::GetAtt: [ CloudFrontDistribution, DomainName ]
+        - AliasTarget:
+            DNSName:
+              Fn::GetAtt: [CloudFrontDistribution, DomainName]
+            HostedZoneId: Z2FDTNDATAQYW2
+          Name:
+            Ref: DomainName
+          Type: A

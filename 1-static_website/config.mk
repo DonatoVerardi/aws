@@ -1,6 +1,5 @@
 ### AWS Configuration
-# This is the config which will be used by the 'apply' and 'delete' make targets
-AWS_STACK_NAME=staticWebsite
-AWS_STACK_FILENAME=files/static_website_stack.yml
-AWS_BUCKET_NAME=static.lab.donato.cloudns.ph
-AWS_DOMAIN_NAME=lab.donato.cloudns.ph
+# This is the config which will be used by the 'deploy' and 'clean' make targets
+AWS_BUCKET_NAME=donato-static-1234
+AWS_DOMAIN_NAME=static-website.donato.cloudns.ph
+AWS_CERTIFICATE_ARN="arn:aws:acm:us-east-1:440111066673:certificate/ae2b1b4f-aa3c-4a85-a0cb-782579d6caa9"
