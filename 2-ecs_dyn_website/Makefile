@@ -3,19 +3,11 @@ include config.mk
 .PHONY: deploy
 deploy:
 	@echo ":::deploying the application to aws"	
-	aws cloudformation deploy --stack-name staticWebsite --template-file templates/static_website_stack.yml 
-	aws s3 cp --recursive website s3://${AWS_BUCKET_NAME}
-
-.PHONY: update
-update:
-	@echo ":::updating the application to aws"	
-	aws cloudformation deploy --stack-name staticWebsite --template-file templates/static_website_stack.yml 
-
+	aws cloudformation deploy --stack-name ${AWS_STACK_NAME} --template-file templates/ecs_dyn_website_stack.yml --parameter-override ECRName=${AWS_ECR_NAME}
 
 
 .PHONY: clean
 clean:
 	@echo ":::deleting the application"
-	aws s3 rm --recursive s3://${AWS_BUCKET_NAME}
-	aws cloudformation delete-stack --stack-name staticWebsite
+	aws cloudformation delete-stack --stack-name ${AWS_STACK_NAME}
 		

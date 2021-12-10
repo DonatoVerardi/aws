@@ -12,71 +12,6 @@ This lab uses the following tools and components:
 - Route53
 - CloudFront
 
-## Prerequisites
-
-In order to use and configure Route53, you'll need to create a (free) domain, create a host zone in AWS Route53 and create the SSL certificate.
-
-### Create free domain
-
-I created my own for free on this website: https://www.cloudns.net/
-
-1. Browse to https://www.cloudns.net/
-2. Create a free account
-3. Select "Free DNS"
-4. Select "Free zone"
-5. Give it a name, in my case donato.cloudns.ph
-
-### Create a Host Zone in Route53
-
-In the AWS Console Management search for Route53.
-Select "Hosted zones" and click "create hosted zone"
-https://console.aws.amazon.com/route53/v2/hostedzones#
-
-In the "Domain Name" enter a new subdomain followed by the domain you just created.
-In my case: static-website.donato.cloudns.ph
-
-Select "Public hosted zone" and click "Create hosted zone".
-You should see a new record of type "NS" with four URL under "Value/Route traffic to".
-In my case:
-
-- ns-988.awsdns-59.net.
-- ns-1642.awsdns-13.co.uk.
-- ns-1480.awsdns-57.org.
-- ns-237.awsdns-29.com.
-
-Browse to https://www.cloudns.net/ and login.
-In "DNS Hosting" click on your domain.
-Click on the button "+ Add new record" on the bottom left.
-For each NS address displayed in the AWS "Hosted Zone"
-
-- Type: NS
-- Host: subdomain (in my case: static-website.donato.cloudns.ph)
-- Points to: enter the address of the AWS NS. For example ns-988.awsdns-59.net (without the "." at the end)
-
-You should see four new records created which point to the AWS nameservers.
-
-You can check the resolution using for example dig:
-
-> dig @8.8.8.8 static-website.donato.cloudns.ph +trace
-
-### Create SSL certificates
-
-In the AWS Console Management, search for Certificate Manager.
-
-Switch to us-east-1 - N. Virginia
-
-Create a new certificate by clicking on "Request".
-
-1. Select "Request a public certificate" and next
-2. Enter your Fully qualified Name. In my case: static-website.donato.cloudns.ph
-3. Select "DNS Validation" and click on "Request"
-
-Your certificate should be stuck in the Status "Pending validation"
-
-Click on it and select "Create records in Route 53".
-Click on "Create Records".
-After a couple of minutes the status should change to "Issued"
-
 ## Setup
 
 Clone this repository.
@@ -103,7 +38,7 @@ And then, in the console:
 
 ## Test
 
-Browse to the URL you defined as AWS_DOMAIN_NAME (with https://)
+Browse to the URL you defined as DomainName (with https://)
 
 ## Cleanup
 

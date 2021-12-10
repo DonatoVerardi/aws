@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This stack deploys a crud app as a container in ECS
+
+Parameters:
+  ECRName:
+    Description: "Name of the container repository in ECR to be created"
+    Type: String
+    Default: donato
+  DomainName:
+    Description: "DNS Domain of the website"
+    Type: String
+    Default: container.donato.cloudns.ph
+  CertificateARN:
+    Description: "the ARN of the certificate"
+    Type: String
+    Default: "arn:aws:acm:us-east-1:440111066673:certificate/ae2b1b4f-aa3c-4a85-a0cb-782579d6caa9"
+
+Resources:
+  ElasticContainerRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName:
+        Ref: ECRName
