@@ -16,6 +16,10 @@ This lab uses the following tools and components:
 - VPC (Virtual Private Cloud)
 - ELB (Elastic Load Balancer)
 
+## Prerequisites
+
+you need to have docker installed on your local machine
+
 ## Setup
 
 Clone this repository.
