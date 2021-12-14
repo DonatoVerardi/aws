@@ -19,6 +19,8 @@ This lab uses the following tools and components:
 ## Prerequisites
 
 you need to have docker installed on your local machine
+you need to craete the role ecsTaskExecutionRole in IAM:
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
 
 ## Setup
 
@@ -65,3 +67,5 @@ Manual tasks to do, after the cleanup is completed:
 
 - https://medium.com/@msahinkarademir/how-to-create-an-aws-ecs-fargate-cluster-for-our-web-applications-b387611dd7e6
 - https://medium.com/@arliber/aws-fargate-from-start-to-finish-for-a-nodejs-app-9a0e5fbf6361
+- https://mydeveloperplanet.com/2021/10/12/how-to-deploy-a-spring-boot-app-on-aws-fargate/
+- https://mydeveloperplanet.com/2021/10/26/how-to-create-an-aws-cloudformation-fargate-template/

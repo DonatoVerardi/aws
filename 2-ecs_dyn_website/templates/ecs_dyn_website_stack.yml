@@ -3,10 +3,18 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: This stack deploys a crud app as a container in ECS
 
 Parameters:
+  AWSRegion:
+    Description: "Region in which you want to deploy"
+    Type: String
+    Default: eu-west-3
   ECRName:
     Description: "Name of the container repository in ECR to be created"
     Type: String
     Default: donato
+  AWSAccountID:
+    Description: "ID of your AWS Account"
+    Type: String
+    Default: 440111066673
   DomainName:
     Description: "DNS Domain of the website"
     Type: String
@@ -22,3 +30,35 @@ Resources:
     Properties:
       RepositoryName:
         Ref: ECRName
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      RequiresCompatibilities:
+        - "FARGATE"
+      ExecutionRoleArn:
+        Fn::Sub: "arn:aws:iam::${AWSAccountID}:role/ecsTaskExecutionRole"
+      Cpu: 256
+      Memory: 512
+      NetworkMode: "awsvpc"
+      ContainerDefinitions:
+        - Name:
+            Ref: ECRName
+          Image:
+            Fn::Sub: "${AWSAccountID}.dkr.ecr.${AWSRegion}.amazonaws.com/${ECRName}:latest"
+          MemoryReservation: 256
+          Memory: 512
+          PortMappings:
+            - ContainerPort: 8080
+              Protocol: tcp
+# create VPC
+# create subnet
+# create Security Group
+# Create tech user
+# create ELB
+# create Cluster
+# create Task
+# create Service
+# create Target Group
+# create Role
+# create DNS and CNAME

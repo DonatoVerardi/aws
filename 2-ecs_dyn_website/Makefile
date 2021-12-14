@@ -3,7 +3,7 @@ include config.mk
 .PHONY: deploy
 deploy:
 	@echo ":::deploying the application to aws"	
-	aws cloudformation deploy --stack-name ${AWS_STACK_NAME} --template-file templates/ecs_dyn_website_stack.yml --parameter-override ECRName=${AWS_ECR_NAME}
+	aws cloudformation deploy --stack-name ${AWS_STACK_NAME} --template-file templates/ecs_dyn_website_stack.yml --parameter-override ECRName=${AWS_ECR_NAME} --parameter-override AWSAccountID=${AWS_ACCOUNT_ID} --parameter-override AWSRegion=${AWS_REGION}
 
 
 .PHONY: push
@@ -18,5 +18,6 @@ push:
 .PHONY: clean
 clean:
 	@echo ":::deleting the application"
+	aws ecr batch-delete-image --repository-name=donato --image-ids imageTag=latest
 	aws cloudformation delete-stack --stack-name ${AWS_STACK_NAME}
 		
