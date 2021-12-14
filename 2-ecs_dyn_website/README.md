@@ -60,3 +60,4 @@ Manual tasks to do, after the cleanup is completed:
 ## Many many thanks to
 
 - https://medium.com/@msahinkarademir/how-to-create-an-aws-ecs-fargate-cluster-for-our-web-applications-b387611dd7e6
+- https://medium.com/@arliber/aws-fargate-from-start-to-finish-for-a-nodejs-app-9a0e5fbf6361

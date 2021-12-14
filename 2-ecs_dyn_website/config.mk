@@ -4,3 +4,5 @@ AWS_STACK_NAME=crudApp
 AWS_ECR_NAME=donato
 AWS_DOMAIN_NAME=static-website.donato.cloudns.ph
 AWS_CERTIFICATE_ARN="arn:aws:acm:us-east-1:440111066673:certificate/ae2b1b4f-aa3c-4a85-a0cb-782579d6caa9"
+AWS_REGION=eu-west-3
+AWS_ACCOUNT_ID=440111066673
