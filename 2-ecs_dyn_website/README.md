@@ -69,3 +69,4 @@ Manual tasks to do, after the cleanup is completed:
 - https://medium.com/@arliber/aws-fargate-from-start-to-finish-for-a-nodejs-app-9a0e5fbf6361
 - https://mydeveloperplanet.com/2021/10/12/how-to-deploy-a-spring-boot-app-on-aws-fargate/
 - https://mydeveloperplanet.com/2021/10/26/how-to-create-an-aws-cloudformation-fargate-template/
+- https://github.com/nathanpeck/aws-cloudformation-fargate
