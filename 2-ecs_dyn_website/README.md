@@ -48,9 +48,33 @@ And then, in the console:
 
 > make deploy
 
+## configure DNS lookup
+
+As of the 16.12.2021, custom origins are not supported in Cloudformation.
+
+In order to redirect your URL to cloud front, you have to :
+
+1. create a cloud front distribution
+   Origin Domain: choose your ALB
+   Protocol: HTTP
+   Viewer Protocol policy: redirect to HTTPS
+   Allowed HTTP methods: GET, HEAD, OPTION
+   Alternate Domain Name (CName): enter your domain name. In my case: lab.donato.cloudns.ph
+   Custom SSL Certificate: choose your certificate in the list
+   Let all the other values as default.
+
+2. create a DNS entry in Route53 -> hosted zone > your hosted domain
+   select create record
+   Record Type: A
+   click on "Alias"
+   Choose endpoint: alias to cloudfront distribution
+   Choose distribution: select your distribution
+   click "create records" and wait about 3 minutes
+
 ## Test
 
 Browse to the URL you defined as DomainName (with https://)
+In my case: https://lab.donato.cloudns.ph
 
 ## Cleanup
 

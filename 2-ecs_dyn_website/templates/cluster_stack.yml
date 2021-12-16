@@ -7,10 +7,10 @@ Parameters:
     Description: "Region in which you want to deploy"
     Type: String
     Default: eu-west-3
-  ECRName:
-    Description: "Name of the container repository in ECR to be created"
+  ImageName:
+    Description: "Name of the image"
     Type: String
-    Default: donato
+    Default: nginx
   AWSAccountID:
     Description: "ID of your AWS Account"
     Type: String
@@ -18,7 +18,7 @@ Parameters:
   DomainName:
     Description: "DNS Domain of the website"
     Type: String
-    Default: container.donato.cloudns.ph
+    Default: lab.donato.cloudns.ph
   CertificateARN:
     Description: "the ARN of the certificate"
     Type: String
@@ -89,14 +89,6 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnetTwo
       RouteTableId: !Ref PublicRouteTable
-  #
-  # Create a private ECR Repository
-  #
-  ElasticContainerRepository:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName:
-        Ref: ECRName
 
   #
   # Create a task definition of type FARGATE
@@ -115,9 +107,9 @@ Resources:
       NetworkMode: "awsvpc"
       ContainerDefinitions:
         - Name:
-            Ref: ECRName
+            Ref: ImageName
           Image:
-            Fn::Sub: "${AWSAccountID}.dkr.ecr.${AWSRegion}.amazonaws.com/${ECRName}:latest"
+            Fn::Sub: "${AWSAccountID}.dkr.ecr.${AWSRegion}.amazonaws.com/${ImageName}:latest"
           MemoryReservation: 256
           Memory: 512
           PortMappings:
@@ -243,17 +235,19 @@ Resources:
             - !Ref "PublicSubnetTwo"
       LoadBalancers:
         - ContainerName:
-            Ref: "ECRName"
+            Ref: "ImageName"
           ContainerPort: 8080
           TargetGroupArn:
             Ref: "TargetGroupPublic"
-# create VPC
-# create subnet
-# create Security Group
-# Create tech user
-# create ELB
-# create Cluster
-# create Service
-# create Target Group
-# create Role
-# create DNS and CNAME
+
+Outputs:
+  ClusterName:
+    Description: The name of the ECS cluster
+    Value: !Ref "ECSCluster"
+    Export:
+      Name: !Join [":", [!Ref "AWS::StackName", "ClusterName"]]
+  ExternalUrl:
+    Description: The url of the external load balancer
+    Value: !Join ["", ["http://", !GetAtt "PublicLoadBalancer.DNSName"]]
+    Export:
+      Name: !Join [":", [!Ref "AWS::StackName", "ExternalUrl"]]
