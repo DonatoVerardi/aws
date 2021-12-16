@@ -220,27 +220,33 @@ Resources:
 
   Service:
     Type: AWS::ECS::Service
-    #DependsOn: LoadBalancerRule
+    DependsOn:
+      - PublicLoadBalancerListener
     Properties:
-      ServiceName: "fargate-service"
-      Cluster: !Ref "ECSCluster"
       LaunchType: FARGATE
-      DeploymentConfiguration:
-        MaximumPercent: 200
-        MinimumHealthyPercent: 75
+      ServiceName: "fargate-service"
+      Cluster:
+        Ref: "ECSCluster"
       DesiredCount: 1
+      TaskDefinition:
+        Ref: "TaskDefinition"
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
-          SecurityGroups: !Ref FargateContainerSecurityGroup
+          SecurityGroups:
+            - !GetAtt FargateContainerSecurityGroup.GroupId
           Subnets:
             - !Ref "PublicSubnetOne"
             - !Ref "PublicSubnetTwo"
-      TaskDefinition: !Ref "TaskDefinition"
       LoadBalancers:
-        - ContainerName: !Ref "ECRName"
+        - ContainerName:
+            Ref: "ECRName"
           ContainerPort: 8080
-          TargetGroupArn: !Ref "TargetGroupPublic"
+          TargetGroupArn:
+            Ref: "TargetGroupPublic"
 # create VPC
 # create subnet
 # create Security Group
