@@ -6,17 +6,20 @@ Parameters:
   BucketName:
     Description: "Name of the bucket to be created"
     Type: String
-    Default: static-s3-bucket-2021-12-17
+    Default: changeme
   DomainName:
     Description: "DNS Domain of the website"
     Type: String
-    Default: lab.donato.cloudns.ph
+    Default: example.com
   CertificateARN:
     Description: "the ARN of the certificate"
     Type: String
-    Default: "arn:aws:acm:us-east-1:440111066673:certificate/1b375a7c-d312-4b59-a846-4ef13a8fd32d"
+    Default: "arn:aws:acm:us-east-1:*********:certificate/******************"
 
 Resources:
+  #
+  # Create a s3 bucket for our static content
+  #
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -26,6 +29,11 @@ Resources:
         IndexDocument: "index.html"
         ErrorDocument: "error.html"
 
+  #
+  # Create a cloud origin access identity.
+  # it will be used by the cloudformation distribution
+  # and has to be configured in the bucket policies
+  #
   CloudFrontOriginAccessIdentity:
     Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
     Properties:
@@ -33,6 +41,10 @@ Resources:
         Comment:
           Fn::Sub: "Cloudfront Origin identity for ${DomainName}"
 
+  #
+  # Create the bucket policies
+  # map the bucket and add access to the cloudfront access identity
+  #
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -52,6 +64,10 @@ Resources:
             Resource:
               Fn::Sub: "arn:aws:s3:::${BucketName}/*"
 
+  #
+  # Create our cloud front distribution
+  # set the origin to our s3 bucket and map to the cloud origin access identity
+  #
   CloudFrontDistribution:
     Type: "AWS::CloudFront::Distribution"
     Properties:
@@ -96,6 +112,10 @@ Resources:
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
 
+  #
+  # Add a A record in Route 53, to forward the traffic
+  # from our domain to the URL (domain) of the cloud distribution
+  #
   DNS:
     Type: AWS::Route53::RecordSetGroup
     Properties:
