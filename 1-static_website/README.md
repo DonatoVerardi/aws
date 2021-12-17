@@ -1,6 +1,6 @@
 # Static Website
 
-The main goal of this lab is to familiarize with the AWS environment and create a basic HTTP static website.
+The main goal of this lab is to familiarize with the AWS environment and create a basic static website with our own DNS and a TLS connection (HTTPS).
 
 ## Tools and components
 
@@ -28,11 +28,11 @@ The following scripts will create a Stack in CloudFormation which:
 
 ## Deployment
 
-Open the file static_website_stack.yml and change the Parameter Values (default):
+Open the file config.mk and change the Parameter Values (default):
 
-- BucketName= _this must be a unique name_
-- DomainName= _URL of your website_
-- CertificateARN= _ARN of your certificate, that you will find in AWS Certificate Manager_
+- AWS_BUCKET_NAME= this must be a unique name
+- AWS_DOMAIN_NAME= URL of your website
+- AWS_CERTIFICATE_ARN= ARN of your certificate, that you will find in AWS Certificate Manager
 
 And then, in the console:
 
@@ -40,7 +40,7 @@ And then, in the console:
 
 ## Test
 
-Browse to the URL you defined as DomainName (with https://)
+Browse to the URL you defined as AWS_DOMAIN_NAME.
 
 ## Cleanup
 

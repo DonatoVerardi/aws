@@ -6,15 +6,15 @@ Parameters:
   BucketName:
     Description: "Name of the bucket to be created"
     Type: String
-    Default: donato-static-1234
+    Default: static-s3-bucket-2021-12-17
   DomainName:
     Description: "DNS Domain of the website"
     Type: String
-    Default: static-website.donato.cloudns.ph
+    Default: lab.donato.cloudns.ph
   CertificateARN:
     Description: "the ARN of the certificate"
     Type: String
-    Default: "arn:aws:acm:us-east-1:440111066673:certificate/ae2b1b4f-aa3c-4a85-a0cb-782579d6caa9"
+    Default: "arn:aws:acm:us-east-1:440111066673:certificate/1b375a7c-d312-4b59-a846-4ef13a8fd32d"
 
 Resources:
   S3Bucket:
