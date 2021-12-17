@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This stack deploys a crud app as a container in ECS
+
+Parameters:
+  ImageName:
+    Description: "Name of the container repository in ECR to be created"
+    Type: String
+    Default: changeme
+
+Resources:
+  #
+  # Create a private ECR Repository
+  #
+  ElasticContainerRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName:
+        Ref: ImageName
+
+Outputs:
+  ElasticContainerRepositoryURI:
+    Description: The URI of the ECR repository
+    Value: !GetAtt "ElasticContainerRepository.RepositoryUri"
+    Export:
+      Name:
+        !Join [":", [!Ref "AWS::StackName", "ElasticContainerRepositoryURI"]]
