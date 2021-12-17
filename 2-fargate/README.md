@@ -34,9 +34,9 @@ The following scripts will create a Stack in CloudFormation which:
 - Creates a VPC with two subnets, an internet gateway, two route tables
 - Creates a security group for the containers and a security group for the application load balancer (ALB)
 - Creates an ALB with a target group and a listener
-- Creates a service which runs the task
+- Creates a service which runs the task and link the ALB over the target group
 
-The creationg of the Route53 record and the cloudformation distribution have to be done manually.
+The creation of the Route53 record and the cloudformation distribution have to be done manually.
 
 ## Deployment
 
@@ -59,8 +59,8 @@ In order to redirect your URL to cloud front, you have to :
 
 1. create a cloud front distribution
    Origin Domain: choose your ALB
-   Protocol: HTTP
-   Viewer Protocol policy: redirect to HTTPS
+   Protocol: HTTP only
+   Viewer Protocol policy: redirect HTTP to HTTPS
    Allowed HTTP methods: GET, HEAD, OPTION
    Alternate Domain Name (CName): enter your domain name. In my case: lab.donato.cloudns.ph
    Custom SSL Certificate: choose your certificate in the list
