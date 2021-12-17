@@ -12,6 +12,8 @@ This lab uses the following tools and components:
 - Route53
 - CloudFront
 
+![diagram lab 1](images/aws_lab1.png)
+
 ## Setup
 
 Clone this repository.
