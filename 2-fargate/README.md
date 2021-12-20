@@ -15,6 +15,8 @@ This lab uses the following tools and components:
 - VPC (Virtual Private Cloud)
 - ELB (Elastic Load Balancer)
 
+![diagram lab 2](images/aws_lab2.png)
+
 ## Prerequisites
 
 you need to have docker installed on your local machine
